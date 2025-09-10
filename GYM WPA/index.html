@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="manifest" href="manifest.json"/>
+    <link rel="stylesheet" href="src/style.css"/>
+    <title>Mis Ejercicios</title>
+  </head>
+  <body>
+    <h1>Rutinas de Entrenamiento</h1>
+    <p id="mensaje-vacio" style="display: none; text-align: center; color: #666;">
+    🎬 No hay videos cargados. Agregá uno desde el formulario.
+  </p>
+    <form id="form-video" class="form-video">
+      <input name="titulo-del-video" type="text" id = "titulo" placeholder="Título del video" required/>
+      <input
+        type="url"
+        id="url"
+        placeholder="URL embebida de YouTube"
+        required
+      />
+      <input type="hidden" id="Id"/>
+      <button type="submit">Agregar video</button>
+    </form>
+    <div id="videos-container">
+      <!-- Acá vamos a agregar botones o listas con tus videos -->
+    </div>
+    <script src="app.mjs" defer></script>
+    <script src="service-worker.js" defer></script>
+  
+  </body>
+</html>
