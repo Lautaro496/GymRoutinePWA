@@ -23,30 +23,7 @@ function generarID() {
   return `${ahora}-${contador}`;
 }
 
-// ==========================
-// FORMATEAR URL DE VIDEO
-// ==========================
-function formatearURL(url) {
-  // YouTube
-  const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^\s&]+)/);
-  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
 
-  // YouTube short links
-  const ytShort = url.match(/(?:https?:\/\/)?youtu\.be\/([^\s&]+)/);
-  if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}`;
-
-  // Otros (videos locales .mp4/.webm/.ogg)
-  return url;
-}
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevenir que el navegador muestre automáticamente el popup
-  e.preventDefault();
-  deferredPrompt = e;
-  // Mostrar botón de instalar
-  document.getElementById('btn-install').style.display = 'block';
-});
 
 document.getElementById('btn-install').addEventListener('click', async () => {
   if (deferredPrompt) {
@@ -247,6 +224,30 @@ formVideos.addEventListener('submit', function (e) {
 iniciarApp();
 });
 
+// ==========================
+// FORMATEAR URL DE VIDEO
+// ==========================
+function formatearURL(url) {
+  // YouTube
+  const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^\s&]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+
+  // YouTube short links
+  const ytShort = url.match(/(?:https?:\/\/)?youtu\.be\/([^\s&]+)/);
+  if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}`;
+
+  // Otros (videos locales .mp4/.webm/.ogg)
+  return url;
+}
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevenir que el navegador muestre automáticamente el popup
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar botón de instalar
+  document.getElementById('btn-install').style.display = 'block';
+});
 
 // Iniciar
 iniciarApp();
