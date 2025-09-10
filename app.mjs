@@ -38,6 +38,28 @@ function formatearURL(url) {
   // Otros (videos locales .mp4/.webm/.ogg)
   return url;
 }
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevenir que el navegador muestre automáticamente el popup
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar botón de instalar
+  document.getElementById('btn-install').style.display = 'block';
+});
+
+document.getElementById('btn-install').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('Usuario aceptó instalar la PWA');
+    } else {
+      console.log('Usuario rechazó instalar la PWA');
+    }
+    deferredPrompt = null;
+  }
+});
 
 // Cargar videos desde localStorage
 function cargarVideos() {
