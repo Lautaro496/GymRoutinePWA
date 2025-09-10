@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5; /* gris claro */
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#videos-container {
+  width: 100%;
+  max-width: 700px;
+}
+
+.video {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.video h2 {
+  margin: 0 0 10px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+button.marcar-btn {
+  background-color: transparent;
+  border: 1px solid #333;
+  color: #333;
+  padding: 6px 10px;
+  margin-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+button.marcar-btn:hover {
+  background-color: #333;
+  color: white;
+}
+
+button.visto {
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#form-video {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 25px;
+}
+
+#form-video input {
+  width: calc(100% - 12px);
+  padding: 6px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+#form-video button {
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#form-video button:hover {
+  background-color: #555;
+}
+
+#mensaje-vacio {
+  font-size: 1.2rem;
+  color: #777;
+  text-align: center;
+  margin-top: 40px;
+}
