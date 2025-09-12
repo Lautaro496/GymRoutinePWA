@@ -37,11 +37,11 @@ const cache_name = `pwa-cache-v${CACHE_VERSION}`;
 const video_cache = `video-cache-v${CACHE_VERSION}`;
 
 const app_shell = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/app.js",
-  "/manifest.json",
+  "./",
+  "./index.html",
+  "./style.css",
+  "./app.js",
+  "./manifest.json",
 ]
 // Instalar y guardar archivos en cache
 self.addEventListener("install", (event) => {
