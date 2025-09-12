@@ -7,7 +7,109 @@ const urlVideo = document.getElementById('url');
 const id = document.getElementById('Id');
 const botonSubmit = document.getElementById('boton-submit');
 const mensajeVacio = document.getElementById('mensaje-vacio');
-const installAppbtn = document.getElementById('btn-install');
+const btnInstallApp = document.getElementById('btnInstallApp');
+
+
+//indexedDB para videos sin conexion
+// IndexedDB
+let db;
+
+const request = indexedDB.open('gymVideosDB', 1);
+
+request.onupgradeneeded = function(event) {
+  db = event.target.result;
+  if (!db.objectStoreNames.contains('videos')) {
+    db.createObjectStore('videos', { keyPath: 'id', autoIncrement: true });
+  }
+  console.log('ObjectStore "videos" creado o actualizado.');
+};
+
+request.onsuccess = function(event) {
+  db = event.target.result;
+  console.log('Conexión exitosa a IndexedDB');
+  leerVideos();
+};
+
+request.onerror = function(event) {
+  console.error('Error al abrir IndexedDB:', event.target.error);
+};
+
+// Agregar video offline
+function agregarVideo(videoData) {
+  const transaction = db.transaction(['videos'], 'readwrite');
+  const store = transaction.objectStore('videos');
+  const requestAdd = store.add(videoData);
+
+  requestAdd.onsuccess = function() {
+    console.log('Video agregado con éxito:', videoData.titulo);
+    leerVideos();
+  };
+
+  requestAdd.onerror = function(event) {
+    console.error('Error al agregar video:', event.target.error);
+  };
+}
+
+// Leer videos y mostrar
+function leerVideos() {
+  const transaction = db.transaction(['videos'], 'readonly');
+  const store = transaction.objectStore('videos');
+  const requestGetAll = store.getAll();
+
+  requestGetAll.onsuccess = function() {
+    const videos = requestGetAll.result;
+    console.log('Videos en DB:', videos);
+    mostrarVideos(videos);
+  };
+}
+
+// Mostrar videos y reproducir al click
+function mostrarVideos(videos) {
+  const videoList = document.getElementById('video-list');
+  videoList.innerHTML = '';
+
+  if (videos.length === 0) {
+    document.getElementById('mensaje-vacio').style.display = 'block';
+    return;
+  } else {
+    document.getElementById('mensaje-vacio').style.display = 'none';
+  }
+
+  videos.forEach(video => {
+    const li = document.createElement('li');
+    li.textContent = video.titulo;
+
+    li.addEventListener('click', () => {
+      const player = document.getElementById('player');
+      player.src = video.data;
+      player.style.display = 'block';
+      player.play();
+    });
+
+    videoList.appendChild(li);
+  });
+}
+
+// Subir video offline desde input
+document.getElementById('add-video-btn').addEventListener('click', () => {
+  const fileInput = document.getElementById('video-upload');
+  if (fileInput.files.length === 0) return alert('Selecciona un video');
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const videoData = {
+      titulo: file.name,
+      data: e.target.result
+    };
+    agregarVideo(videoData);
+  };
+
+  reader.readAsDataURL(file);
+});
+
+
 
 // Generar ID único
 let ultimotimestamp = 0;
@@ -231,11 +333,12 @@ let installPrompt = null;
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   installPrompt = event;
-  installAppbtn.removeAttribute("hidden");
+  btnInstallApp.removeAttribute("hidden");
+  console.log("PWA instalable, botón visible");
 });
 
-installAppbtn.addEventListener('click', async () => {
-  if (!installPrompt) {
+btnInstallApp.addEventListener('click', async () => {
+  if (installPrompt) {
     installPrompt.prompt();
 
     const { outcome } = await installPrompt.userChoice;
@@ -245,12 +348,9 @@ installAppbtn.addEventListener('click', async () => {
       console.log('Usuario rechazó instalar la PWA');
     }
     installPrompt = null;
-    installAppbtn.setAttribute("hidden", "");
+    btnInstallApp.setAttribute("hidden", "");
   }
 });
-
-
-
 
 // Iniciar
 iniciarApp();
