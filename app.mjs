@@ -77,8 +77,26 @@ function mostrarVideos(videos) {
 
   videos.forEach(video => {
     const li = document.createElement('li');
-    li.textContent = video.titulo;
 
+    // Título del video
+    const span = document.createElement('span');
+    span.textContent = video.titulo;
+
+    // Botón de eliminar
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar';
+    btnEliminar.style.marginLeft = '10px';
+
+    // Evento para eliminar
+    btnEliminar.addEventListener('click', (e) => {
+      e.stopPropagation(); // Evita que también reproduzca el video
+      eliminarVideo(video.id);
+    });
+
+    li.appendChild(span);
+    li.appendChild(btnEliminar);
+
+    // Evento click para reproducir
     li.addEventListener('click', () => {
       const player = document.getElementById('player');
       player.src = video.data;
@@ -89,6 +107,23 @@ function mostrarVideos(videos) {
     videoList.appendChild(li);
   });
 }
+
+// Función para eliminar un video por ID
+function eliminarVideo(id) {
+  const transaction = db.transaction(['videos'], 'readwrite');
+  const store = transaction.objectStore('videos');
+  const requestDelete = store.delete(id);
+
+  requestDelete.onsuccess = function() {
+    console.log('Video eliminado:', id);
+    leerVideos(); // Actualizar la lista
+  };
+
+  requestDelete.onerror = function(event) {
+    console.error('Error al eliminar video:', event.target.error);
+  };
+}
+
 
 // Subir video offline desde input
 document.getElementById('add-video-btn').addEventListener('click', () => {
@@ -108,6 +143,8 @@ document.getElementById('add-video-btn').addEventListener('click', () => {
 
   reader.readAsDataURL(file);
 });
+
+
 
 
 
