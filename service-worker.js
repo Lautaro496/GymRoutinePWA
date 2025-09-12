@@ -1,8 +1,14 @@
 const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     console.log("supported service Worker") 
+/*Si pusieras /service-worker.js (sin el .), 
+el navegador buscaría en la raíz del dominio, 
+fuera del subdirectorio /GymRoutinePWA/ → da 404.
+Con ./service-worker.js le decís: 
+“buscá el SW dentro de esta carpeta, junto al index.html” 
+→ funciona perfecto en subdirectorios.*/
     try {
-      const registration = await navigator.serviceWorker.register("/service-worker.js", {scope: "/GymRoutinePWA",});
+      const registration = await navigator.serviceWorker.register("./service-worker.js", {scope: "/GymRoutinePWA",});
       window.addEventListener('load', function(){ 
         console.log ('Service Worker registrado con scope',registration.scope)
           // First, do a one-off check if there's currently a
