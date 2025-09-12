@@ -2,7 +2,7 @@ const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     console.log("supported service Worker") 
     try {
-      const registration = await navigator.serviceWorker.register("/service-worker.js", {scope: "/",});
+      const registration = await navigator.serviceWorker.register("GymRoutinePWA//service-worker.js", {scope: "/",});
       window.addEventListener('load', function(){ 
         console.log ('Service Worker registrado con scope',registration.scope)
           // First, do a one-off check if there's currently a
