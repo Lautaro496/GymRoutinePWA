@@ -8,7 +8,7 @@ Con ./service-worker.js le decís:
 “buscá el SW dentro de esta carpeta, junto al index.html” 
 → funciona perfecto en subdirectorios.*/
     try {
-      const registration = await navigator.serviceWorker.register("./service-worker.js", {scope: "/GymRoutinePWA",});
+      const registration = await navigator.serviceWorker.register("./service-worker.js", {scope: "./",});
       window.addEventListener('load', function(){ 
         console.log ('Service Worker registrado con scope',registration.scope)
           // First, do a one-off check if there's currently a
