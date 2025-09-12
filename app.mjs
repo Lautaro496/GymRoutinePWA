@@ -7,6 +7,7 @@ const urlVideo = document.getElementById('url');
 const id = document.getElementById('Id');
 const botonSubmit = document.getElementById('boton-submit');
 const mensajeVacio = document.getElementById('mensaje-vacio');
+const installAppbtn = document.getElementById('btn-install');
 
 // Generar ID único
 let ultimotimestamp = 0;
@@ -22,21 +23,6 @@ function generarID() {
   console.log(ahora - contador);
   return `${ahora}-${contador}`;
 }
-
-
-
-document.getElementById('btn-install').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      console.log('Usuario aceptó instalar la PWA');
-    } else {
-      console.log('Usuario rechazó instalar la PWA');
-    }
-    deferredPrompt = null;
-  }
-});
 
 // Cargar videos desde localStorage
 function cargarVideos() {
@@ -239,14 +225,27 @@ function formatearURL(url) {
   // Otros (videos locales .mp4/.webm/.ogg)
   return url;
 }
-let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevenir que el navegador muestre automáticamente el popup
-  e.preventDefault();
-  deferredPrompt = e;
-  // Mostrar botón de instalar
-  document.getElementById('btn-install').style.display = 'block';
+// modificar boton ui de google para instalar como app en la pc.
+let installPrompt = null;
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  installPrompt = event;
+  installAppbtn.removeAttribute("hidden");
+});
+installAppbtn.addEventListener('click', async () => {
+  if (installPrompt) {
+    installPrompt.prompt();
+
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('Usuario aceptó instalar la PWA');
+    } else {
+      console.log('Usuario rechazó instalar la PWA');
+    }
+    installPrompt = null;
+    installAppbtn.setAttribute("hidden", "");
+  }
 });
 
 // Iniciar
