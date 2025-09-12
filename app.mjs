@@ -227,8 +227,15 @@ function formatearURL(url) {
 }
 
 // modificar boton ui de google para instalar como app en la pc.
+let installPrompt = null;
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  installPrompt = event;
+  installAppbtn.removeAttribute("hidden");
+});
+
 installAppbtn.addEventListener('click', async () => {
-  if (installPrompt) {
+  if (!installPrompt) {
     installPrompt.prompt();
 
     const { outcome } = await installPrompt.userChoice;
@@ -242,12 +249,7 @@ installAppbtn.addEventListener('click', async () => {
   }
 });
 
-let installPrompt = null;
-window.addEventListener("beforeinstallprompt", (event) => {
-  event.preventDefault();
-  installPrompt = event;
-  installAppbtn.removeAttribute("hidden");
-});
+
 
 
 // Iniciar
