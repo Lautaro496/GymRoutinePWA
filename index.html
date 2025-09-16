@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="src/style.css"/>
+  <link rel="icon" href="./images/GYMWPA.png" type="image/png">
+  <title>GYM PWA</title>
+</head>
+<body>
+  <header>
+    <h1>Rutinas de Entrenamiento</h1>
+  </header>
+
+  <main>
+    <!-- Mensaje cuando no hay videos -->
+    <p id="mensaje-vacio" class="mensaje-vacio" style="display: none;">
+      🎬 No hay videos cargados. Agregá uno desde el formulario.
+    </p>
+
+    <!-- Formulario y lista de videos online -->
+    <section id="youtube-videos" class="section">
+      <h2>Videos Online</h2>
+      <form id="form-video" class="form-video">
+        <input name="titulo-del-video" type="text" id="titulo" placeholder="Título del video" required/>
+        <input type="url" id="url" placeholder="URL embebida de YouTube" required/>
+        <input type="hidden" id="Id"/>
+        <button type="submit">Agregar video</button>
+      </form>
+      <div id="videos-container"></div>
+    </section>
+
+    <!-- Botón de instalación PWA -->
+    <button id="btnInstallApp" style="visibility: hidden;">Instalar App</button>
+
+    <!-- Apartado de videos offline -->
+    <section id="offline-videos" class="section">
+      <h2>Mis Videos Offline</h2>
+      <input type="file" id="video-upload" accept="video/mp4">
+      <button id="add-video-btn">Agregar Video</button>
+      <ul id="video-list"></ul>
+    </section>
+
+    <!-- Video player dinámico -->
+    <video id="player" controls style="display:none; width: 100%; margin-top: 10px;"></video>
+  </main>
+
+  <footer>
+    <p>Gym Routine PWA - Funciona offline y se puede instalar en tu celular</p>
+  </footer>
+
+  <script src="app.mjs" type="module" defer></script>
+  <script src="service-worker.js" defer></script>
+</body>
+</html>
